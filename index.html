@@ -3,7 +3,8 @@
 
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>3Dモデル</title>
 
@@ -29,7 +30,6 @@ height: 100vh;
 <body>
 
 <model-viewer
-id="model"
 src="./NFC.glb"
 camera-controls
 auto-rotate
@@ -37,19 +37,6 @@ environment-image="neutral"
 shadow-intensity="1">
 </model-viewer>
 
-<script type="module">
-const viewer = document.querySelector("#model");
-
-viewer.addEventListener("load", () => {
-
-alert("3Dモデルを読み込みました");
-
-viewer.model.materials.forEach((material) => {
-material.pbrMetallicRoughness.setBaseColorFactor([1, 0, 0, 1]);
-});
-
-});
-</script>
 </body>
 
 </html>
