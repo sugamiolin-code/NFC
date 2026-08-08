@@ -42,19 +42,14 @@ const viewer = document.querySelector("#model");
 
 viewer.addEventListener("load", () => {
 
+alert("3Dモデルを読み込みました");
+
 viewer.model.materials.forEach((material) => {
-
-material.pbrMetallicRoughness.setBaseColorFactor("#ff0000");
-
-material.pbrMetallicRoughness.setMetallicFactor(0.2);
-
-material.pbrMetallicRoughness.setRoughnessFactor(0.7);
-
+material.pbrMetallicRoughness.setBaseColorFactor([1, 0, 0, 1]);
 });
 
 });
 </script>
-
 </body>
 
 </html>
