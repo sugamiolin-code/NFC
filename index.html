@@ -8,7 +8,7 @@
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>ARテスト</title>
+<title>NFCモデル確認</title>
 
 <script
 type="module"
@@ -28,12 +28,27 @@ width: 100vw;
 height: 100vh;
 }
 
+#info {
+position: absolute;
+top: 20px;
+left: 20px;
+z-index: 999;
+
+background: white;
+padding: 12px;
+
+border-radius: 10px;
+
+font-size: 16px;
+line-height: 1.6;
+}
+
 #ar-button {
 position: absolute;
 bottom: 40px;
 left: 50%;
+
 transform: translateX(-50%);
-z-index: 999;
 
 padding: 16px 30px;
 
@@ -47,21 +62,25 @@ font-size: 18px;
 font-weight: bold;
 }
 </style>
-
 </head>
 
 <body>
 
+<div id="info">
+モデル情報を確認中...
+</div>
+
 <model-viewer
-src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+id="viewer"
+
+src="./NFC.glb"
 
 camera-controls
 
 ar
 ar-modes="quick-look"
 
-environment-image="neutral"
-shadow-intensity="1">
+environment-image="neutral">
 
 <button
 id="ar-button"
@@ -72,6 +91,30 @@ ARで見る
 </button>
 
 </model-viewer>
+
+<script>
+
+const viewer = document.getElementById("viewer");
+const info = document.getElementById("info");
+
+viewer.addEventListener("load", () => {
+
+const size = viewer.getDimensions();
+const center = viewer.getBoundingBoxCenter();
+
+info.innerHTML = `
+幅 X：${size.x.toFixed(2)} m<br>
+高さ Y：${size.y.toFixed(2)} m<br>
+奥行 Z：${size.z.toFixed(2)} m<br>
+<br>
+中心 X：${center.x.toFixed(2)} m<br>
+中心 Y：${center.y.toFixed(2)} m<br>
+中心 Z：${center.z.toFixed(2)} m
+`;
+
+});
+
+</script>
 
 </body>
 
