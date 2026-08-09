@@ -8,19 +8,21 @@
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>NFCモデル確認</title>
+<title>NFC ARモデル</title>
 
 <script
 type="module"
-src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js">
 </script>
 
 <style>
+
 html, body {
 margin: 0;
 width: 100%;
 height: 100%;
 background-color: #dddddd;
+font-family: sans-serif;
 }
 
 model-viewer {
@@ -28,23 +30,48 @@ width: 100vw;
 height: 100vh;
 }
 
-#info {
+/* 縮尺選択 */
+#controls {
 position: absolute;
 top: 20px;
 left: 20px;
 z-index: 999;
 
 background: white;
-padding: 12px;
+padding: 14px;
 
-border-radius: 10px;
+border-radius: 12px;
 
-font-size: 16px;
-line-height: 1.6;
+box-shadow: 0 3px 12px rgba(0,0,0,0.2);
 }
 
+#controls label {
+font-size: 15px;
+font-weight: bold;
+}
+
+#scale-select {
+margin-top: 8px;
+
+width: 130px;
+
+padding: 8px;
+
+font-size: 16px;
+
+border-radius: 8px;
+border: 1px solid #aaa;
+}
+
+#scale-info {
+margin-top: 8px;
+font-size: 14px;
+}
+
+/* ARボタン */
 #ar-button {
 position: absolute;
+
 bottom: 40px;
 left: 50%;
 
@@ -60,17 +87,54 @@ color: white;
 
 font-size: 18px;
 font-weight: bold;
+
+z-index: 999;
 }
+
 </style>
 </head>
 
+
 <body>
 
-<div id="info">
-モデル情報を確認中...
+
+<div id="controls">
+
+<label for="scale-select">
+AR表示サイズ
+</label>
+
+<br>
+
+<select id="scale-select">
+
+<option value="1">
+実寸 1:1
+</option>
+
+<option value="0.1">
+1:10
+</option>
+
+<option value="0.02">
+1:50
+</option>
+
+<option value="0.01">
+1:100
+</option>
+
+</select>
+
+<div id="scale-info">
+実寸表示
 </div>
 
+</div>
+
+
 <model-viewer
+
 id="viewer"
 
 src="./NFC.glb"
@@ -78,9 +142,14 @@ src="./NFC.glb"
 camera-controls
 
 ar
+
 ar-modes="quick-look"
 
-environment-image="neutral">
+ar-scale="fixed"
+
+environment-image="neutral"
+
+scale="1 1 1">
 
 <button
 id="ar-button"
@@ -92,29 +161,62 @@ ARで見る
 
 </model-viewer>
 
+
 <script>
 
-const viewer = document.getElementById("viewer");
-const info = document.getElementById("info");
+const viewer =
+document.getElementById("viewer");
 
-viewer.addEventListener("load", () => {
+const scaleSelect =
+document.getElementById("scale-select");
 
-const size = viewer.getDimensions();
-const center = viewer.getBoundingBoxCenter();
+const scaleInfo =
+document.getElementById("scale-info");
 
-info.innerHTML = `
-幅 X：${size.x.toFixed(2)} m<br>
-高さ Y：${size.y.toFixed(2)} m<br>
-奥行 Z：${size.z.toFixed(2)} m<br>
-<br>
-中心 X：${center.x.toFixed(2)} m<br>
-中心 Y：${center.y.toFixed(2)} m<br>
-中心 Z：${center.z.toFixed(2)} m
-`;
+
+scaleSelect.addEventListener("change", () => {
+
+const scale =
+Number(scaleSelect.value);
+
+viewer.scale =
+`${scale} ${scale} ${scale}`;
+
+viewer.updateFraming();
+
+
+if (scale === 1) {
+
+scaleInfo.textContent =
+"実寸表示";
+
+}
+
+else if (scale === 0.1) {
+
+scaleInfo.textContent =
+"実物の1/10";
+
+}
+
+else if (scale === 0.02) {
+
+scaleInfo.textContent =
+"実物の1/50";
+
+}
+
+else if (scale === 0.01) {
+
+scaleInfo.textContent =
+"実物の1/100";
+
+}
 
 });
 
 </script>
+
 
 </body>
 
