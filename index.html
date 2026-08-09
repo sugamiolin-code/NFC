@@ -8,7 +8,7 @@
 name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>ARテスト</title>
+<title>3Dモデル</title>
 
 <script
 type="module"
@@ -20,22 +20,12 @@ html, body {
 margin: 0;
 width: 100%;
 height: 100%;
+background-color: #dddddd;
 }
 
 model-viewer {
-width: 100%;
-height: 100%;
-background: #dddddd;
-}
-
-#test {
-position: absolute;
-top: 20px;
-left: 20px;
-z-index: 999;
-background: white;
-padding: 10px;
-border-radius: 8px;
+width: 100vw;
+height: 100vh;
 }
 
 #ar-button {
@@ -57,25 +47,23 @@ font-size: 18px;
 font-weight: bold;
 }
 </style>
+
 </head>
 
 <body>
 
-<div id="test">
-ARチェック中...
-</div>
-
 <model-viewer
-id="viewer"
-
 src="./NFC.glb"
 
 camera-controls
+auto-rotate
 
 ar
 ar-modes="quick-look webxr scene-viewer"
+ar-scale="fixed"
 
-environment-image="neutral">
+environment-image="neutral"
+shadow-intensity="1">
 
 <button
 id="ar-button"
@@ -86,31 +74,6 @@ ARで見る
 </button>
 
 </model-viewer>
-
-
-<script>
-
-const viewer = document.getElementById("viewer");
-const test = document.getElementById("test");
-
-viewer.addEventListener("load", () => {
-
-test.innerHTML =
-"3Dモデル：読み込み成功<br>" +
-"AR対応：" + viewer.canActivateAR;
-
-});
-
-viewer.addEventListener("error", (event) => {
-
-test.innerHTML =
-"3Dモデル：読み込みエラー";
-
-console.log(event);
-
-});
-
-</script>
 
 </body>
 
